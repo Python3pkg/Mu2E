@@ -8,7 +8,7 @@ import pandas as pd
 
 def hall_probe_sweep(z_regions = None, probes = None):
     if z_regions == None:
-        z_regions = range(-6229,-4004,500)
+        z_regions = list(range(-6229,-4004,500))
     if probes == None:
         hall_probe_distances = [40,80,120,160]
     else:
@@ -16,10 +16,10 @@ def hall_probe_sweep(z_regions = None, probes = None):
     #z_regions = [-6129,-6154,-6179,-6204,-6229]
     df_fit_values = pd.DataFrame()
     for z in z_regions:
-        print 'Z ==',z
+        print('Z ==',z)
         df,fig,lm = plot_maker.plot_A_v_B_and_fit('Br','X','Z=={}'.format(z),'Y==0','X>=40','X<=160')
         for r in hall_probe_distances:
-            print 'R ==',r
+            print('R ==',r)
             df,fig,popt,pcov = plot_maker.plot_A_v_Theta('Br',r,'Z=={}'.format(z),18,'cubic')
             Aerr = 0
             try: Aerr = np.sqrt(np.diag(pcov)[0])
@@ -56,7 +56,7 @@ def hall_probe_sweep(z_regions = None, probes = None):
 
 def fit_compare_sweep(z_regions = None):
     if z_regions == None:
-        z_regions = range(-6229,-4004,500)
+        z_regions = list(range(-6229,-4004,500))
     for z in z_regions:
         df_left, fig_left = plot_maker.plot_A_v_B('Br','X','Z=={}'.format(z),'Y==0','X>-300','X<-100')
         df_right, fig_right = plot_maker.plot_A_v_B('Br','X','Z=={}'.format(z),'Y==0','X<300','X>100')

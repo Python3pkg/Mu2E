@@ -24,19 +24,19 @@ Notes:
 brianleepollack@gmail.com
 """
 
-from __future__ import division
+
 from scipy import special
 import numpy as np
 # import numexpr as ne
 from numba import guvectorize
 # from math import cos, sin
-from itertools import izip
+
 
 
 def pairwise(iterable):
     """s -> (s0,s1), (s2,s3), (s4, s5), ..."""
     a = iter(iterable)
-    return izip(a, a)
+    return zip(a, a)
 
 
 class FunctionProducer(object):
@@ -117,10 +117,10 @@ class FunctionProducer(object):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, d in enumerate(Ds):

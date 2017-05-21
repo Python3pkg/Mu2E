@@ -5,18 +5,18 @@ print("This is exercise_1.")
 import numpy as np
 import matplotlib.pyplot as plt
 
-print("pi is " + str(np.pi))
+print(("pi is " + str(np.pi)))
 X = np.linspace(-np.pi, np.pi, 256, endpoint=True)
 C,S = np.cos(X), np.sin(X)
 
 # Print out some values
 for it in range(5):
-    print("\ti= " + str(it) + "\tX= " + str(X[it]))
+    print(("\ti= " + str(it) + "\tX= " + str(X[it])))
 
 deltaX = X[1]-X[0]
-print("step size = " + str(deltaX))
+print(("step size = " + str(deltaX)))
 
-print("min and max:\t" + str(C.min()) + "\t" + str(C.max()))
+print(("min and max:\t" + str(C.min()) + "\t" + str(C.max())))
 
 
 # Make plots of curves

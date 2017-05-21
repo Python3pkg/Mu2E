@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
-from __future__ import division
+
 import numpy as np
 import pandas as pd
-import cPickle as pkl
+import pickle as pkl
 import IPython.display as IPdisplay
 import glob
 from PIL import Image as PIL_Image
@@ -29,10 +29,10 @@ def make_legend_arrow(legend, orig_handle,
 del Axes3D
 
 def interp(df,row_index):
-    anchor = df.ix[row_index][np.isfinite(df.ix[row_index])].keys()[0]
+    anchor = list(df.ix[row_index][np.isfinite(df.ix[row_index])].keys())[0]
     step_size = ((df.ix[row_index][anchor]-df.ix[row_index-1][anchor])/
             (df.ix[row_index+1][anchor]-df.ix[row_index-1][anchor]))
-    nan_cols = df.ix[row_index][np.isnan(df.ix[row_index])].keys()
+    nan_cols = list(df.ix[row_index][np.isnan(df.ix[row_index])].keys())
     for col in nan_cols:
         new_val = df.ix[row_index-1][col]+step_size*(df.ix[row_index+1][col]-df.ix[row_index-1][col])
         df.set_value(row_index,col,new_val)
@@ -73,9 +73,9 @@ if __name__ == "__main__":
     xx,yy,zz = np.meshgrid(x,y,z)
 
     df = pd.DataFrame(np.array([xx,yy,zz]).reshape(3,-1).T,columns=['X','Y','Z'])
-    print df.head()
-    print mag_field_function_ideal(df['X'][0],df['Y'][0],df['Z'][0],cart=True)
-    df['Bx'],df['By'],df['Bz']= zip(*df.apply(lambda row: mag_field_function_ideal(row['X'],row['Y'],row['Z'],cart=True),axis=1))
+    print(df.head())
+    print(mag_field_function_ideal(df['X'][0],df['Y'][0],df['Z'][0],cart=True))
+    df['Bx'],df['By'],df['Bz']= list(zip(*df.apply(lambda row: mag_field_function_ideal(row['X'],row['Y'],row['Z'],cart=True),axis=1)))
 
 #recreate 3d meshgrid by reshaping the df back into six 3d arrays
     quiver_size = int(round(df.shape[0]**(1./3.)))
@@ -112,13 +112,13 @@ if __name__ == "__main__":
         X_bp= solver_bad_p.solve()[0]
         X_br= solver_bad_r.solve()[0]
         end_time=time()
-        print("Elapsed time was %g seconds" % (end_time - start_time))
+        print(("Elapsed time was %g seconds" % (end_time - start_time)))
 
 
-        print 'ideal xyz       :',X[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X[-1,0:3]
-        print 'bad measure xyz :',X_bm[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X_bm[-1,0:3]
-        print 'bad position xyz:',X_bp[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X_bp[-1,0:3]
-        print 'bad rotation xyz:',X_br[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X_br[-1,0:3]
+        print('ideal xyz       :',X[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X[-1,0:3])
+        print('bad measure xyz :',X_bm[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X_bm[-1,0:3])
+        print('bad position xyz:',X_bp[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X_bp[-1,0:3])
+        print('bad rotation xyz:',X_br[-1,0:3], 'ideal-{this}:', X[-1,0:3] - X_br[-1,0:3])
 
         df_ideal = pd.DataFrame(X[:,0:3], columns=['X','Y','Z'])
         df_bm = pd.DataFrame(X_bm[:,0:3], columns=['X','Y','Z'])
@@ -201,7 +201,7 @@ if __name__ == "__main__":
             plt.savefig('../plots/anim/epath_tmp/electron_path_displacements_trk_'+str(i).zfill(3)+'.png')
         else:
             plt.savefig('../plots/anim/epath_tmp/electron_path_displacements_'+str(i).zfill(3)+'.png')
-        print np.sqrt((x-xbm)**2+(y-ybm)**2),  np.sqrt((x-xbr)**2+(y-ybr)**2), np.sqrt((x-xbp)**2+(y-ybp)**2)
+        print(np.sqrt((x-xbm)**2+(y-ybm)**2),  np.sqrt((x-xbr)**2+(y-ybr)**2), np.sqrt((x-xbp)**2+(y-ybp)**2))
 
     images = []
     if start_in_tracker:
@@ -219,7 +219,7 @@ if __name__ == "__main__":
         file_path_name = '/Users/brianpollack/Coding/Mu2E/plots/anim/electron_path_displacements_trk.gif'
     else:
         file_path_name = '/Users/brianpollack/Coding/Mu2E/plots/anim/electron_path_displacements.gif'
-    print file_path_name, images
+    print(file_path_name, images)
     writeGif(file_path_name, images, duration=0.5)
     IPdisplay.Image(url=file_path_name)
 

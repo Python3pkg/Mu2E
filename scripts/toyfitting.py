@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-def legendre_2d((x,y), a,b,c,d):
+def legendre_2d(xxx_todo_changeme, a,b,c,d):
+  (x,y) = xxx_todo_changeme
   leg = a*x*y + b*(x*y**2) + c*(y*x**2) + d*(x**2*y**2)
   return leg.ravel()
 
@@ -55,7 +56,7 @@ plt.show()
 
 plt.get_current_fig_manager().window.wm_geometry("-2600-600")
 
-print popt
+print(popt)
 
 
 

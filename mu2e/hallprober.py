@@ -76,7 +76,7 @@ import shutil
 import math
 import collections
 import warnings
-import cPickle as pkl
+import pickle as pkl
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -240,10 +240,10 @@ class HallProbeGenerator(object):
         else:
             self.sparse_field = self.sparse_field[self.sparse_field[coord].isin(coord_vals)]
         if len(self.sparse_field[coord].unique()) != len(coord_vals):
-            print 'Warning!: specified vals:'
-            print np.sort(coord_vals)
-            print 'remaining vals:'
-            print np.sort(self.sparse_field[coord].unique())
+            print('Warning!: specified vals:')
+            print(np.sort(coord_vals))
+            print('remaining vals:')
+            print(np.sort(self.sparse_field[coord].unique()))
 
     def get_toy(self):
         """Return `sparse_field`. Deprecated."""
@@ -252,7 +252,7 @@ class HallProbeGenerator(object):
         return self.sparse_field
 
     def bad_calibration(self, measure=False, position=False, rotation=False, seed=None):
-        print seed
+        print(seed)
         """
         Manipulate the `sparse_field` member values, in order to mimic imperfect measurement
         scenarios. By default, no manipulations are performed.
@@ -286,8 +286,8 @@ class HallProbeGenerator(object):
         for phi in self.phi_steps:
             probes = self.sparse_field[np.isclose(self.sparse_field.Phi, phi)].R.unique()
             if measure:
-                print 'using measure sfs:',
-                print measure_sf
+                print('using measure sfs:', end=' ')
+                print(measure_sf)
                 if len(probes) > len(measure_sf):
                     raise IndexError('need more measure_sf, too many probes')
                 for i, probe in enumerate(probes):
@@ -299,8 +299,8 @@ class HallProbeGenerator(object):
                         (abs(self.sparse_field.R) == probe), 'Bphi'] *= measure_sf[i]
 
             if position:
-                print 'using pos offsets:',
-                print pos_offset
+                print('using pos offsets:', end=' ')
+                print(pos_offset)
                 if len(probes) > len(pos_offset):
                     raise IndexError('need more pos_offset, too many probes')
                 for i, probe in enumerate(probes):
@@ -314,8 +314,8 @@ class HallProbeGenerator(object):
                             abs(self.sparse_field.R) == -probe, 'R'] -= pos_offset[i]
 
             if rotation:
-                print 'using rot angles:',
-                print rotation_angle
+                print('using rot angles:', end=' ')
+                print(rotation_angle)
                 if len(probes) > len(rotation_angle):
                     raise IndexError('need more rotation_angle, too many probes')
                 for i, probe in enumerate(probes):
@@ -350,7 +350,7 @@ class HallProbeGenerator(object):
                     all_phis.append(np.pi)
                 else:
                     all_phis.append(phi-np.pi)
-            print 'interpolating data points'
+            print('interpolating data points')
             for r in tqdm(self.r_steps[0], desc='R (mm)', leave=False):
                 for p in tqdm(all_phis, desc='Phi (rads)', leave=False):
                     for z in tqdm(self.z_steps, desc='Z (mm)', leave=False):
@@ -389,7 +389,7 @@ class HallProbeGenerator(object):
                     all_phis.append(np.pi)
                 else:
                     all_phis.append(phi-np.pi)
-            print 'interpolating data points'
+            print('interpolating data points')
             for r in tqdm(self.r_steps[0], desc='R (mm)', leave=False):
                 for p in tqdm(all_phis, desc='Phi (rads)', leave=False):
                     for z in tqdm(self.z_steps, desc='Z (mm)', leave=False):
@@ -423,7 +423,7 @@ class HallProbeGenerator(object):
                     all_phis.append(np.pi)
                 else:
                     all_phis.append(phi-np.pi)
-            print 'interpolating data points'
+            print('interpolating data points')
             for r in tqdm(self.r_steps[0], desc='R (mm)', leave=False):
                 for p in tqdm(all_phis, desc='Phi (rads)', leave=False):
                     for z in tqdm(self.z_steps, desc='Z (mm)', leave=False):
@@ -458,7 +458,7 @@ class HallProbeGenerator(object):
             pkl.dump(self.sparse_field, open(mu2e_ext_path+'tmp_quad.p', "wb"),
                      pkl.HIGHEST_PROTOCOL)
 
-        print 'interpolation complete'
+        print('interpolation complete')
 
 
 def make_fit_plots(df, cfg_data, cfg_geom, cfg_plot, name):
@@ -537,7 +537,7 @@ def make_fit_plots(df, cfg_data, cfg_geom, cfg_plot, name):
                 init_loc = '/Users/brianpollack/Downloads/'+save_name+'.jpeg'
                 final_loc = save_dir+'/'+save_name+'.jpeg'
                 while not os.path.exists(init_loc):
-                        print 'waiting for', init_loc, 'to download'
+                        print('waiting for', init_loc, 'to download')
                         time.sleep(2)
                 shutil.move(init_loc, final_loc)
 
@@ -606,6 +606,6 @@ if __name__ == "__main__":
     data_maker1 = DataFrameMaker('../datafiles/FieldMapData_1760_v5/Mu2e_DSmap', use_pickle=True)
     r_steps = [25, 225, 425, 625, 800]
     phi_steps = [(i/8.0)*np.pi for i in range(-7, 9)]
-    z_steps = range(5021, 13021, 50)
+    z_steps = list(range(5021, 13021, 50))
     hpg = HallProbeGenerator(data_maker1.data_frame,
                              z_steps=z_steps, r_steps=r_steps, phi_steps=phi_steps)

@@ -3,7 +3,7 @@
     without connecting to a public or private plotly enterprise
     server.
 """
-from __future__ import absolute_import
+
 
 import json
 import os

@@ -31,7 +31,7 @@ class TestHallProber(unittest.TestCase):
         pi2r_800mm = [25, 175, 375, 525, 800]
         r_steps_800mm = (pi2r_800mm, pi4r_800mm,
                          pi2r_800mm, pi4r_800mm)
-        z_steps_DS = range(8021, 11021, 50)
+        z_steps_DS = list(range(8021, 11021, 50))
         phi_steps_8 = (0, np.pi/4, np.pi/2, 3*np.pi/4)
         cls.cfg_geom_cyl_test  = cfg_geom('cyl', z_steps_DS, r_steps_800mm, phi_steps_8,
                                           xy_steps=None, bad_calibration=[False, False, False],

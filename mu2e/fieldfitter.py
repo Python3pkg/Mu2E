@@ -39,14 +39,14 @@ Example:
 brianleepollack@gmail.com
 """
 
-from __future__ import division
+
 from time import time
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 import pandas as pd
 from lmfit import Model, Parameters, report_fit
 from mu2e import mu2e_ext_path
-import tools.fit_funcs as ff
+from . import tools.fit_funcs as ff
 # import tools.fit_func_class as ffc
 
 
@@ -368,10 +368,10 @@ class FieldFitter:
                     self.params.add('Y', value=0, vary=True)
 
         if not cfg_pickle.recreate:
-            print 'fitting with n={0}, m={1}, cn={2}, cm={3}'.format(ns, ms, cns, cms)
+            print('fitting with n={0}, m={1}, cn={2}, cm={3}'.format(ns, ms, cns, cms))
         else:
-            print 'recreating fit with n={0}, m={1}, cn={2}, cm={3}, pickle_file={4}'.format(
-                ns, ms, cns, cms, cfg_pickle.load_name)
+            print('recreating fit with n={0}, m={1}, cn={2}, cm={3}, pickle_file={4}'.format(
+                ns, ms, cns, cms, cfg_pickle.load_name))
         start_time = time()
         if func_version not in [6, 8, 9]:
             if cfg_pickle.recreate:
@@ -434,7 +434,7 @@ class FieldFitter:
 
         self.params = self.result.params
         end_time = time()
-        print("Elapsed time was %g seconds" % (end_time - start_time))
+        print(("Elapsed time was %g seconds" % (end_time - start_time)))
         report_fit(self.result, show_correl=False)
         if cfg_pickle.save_pickle:  # and not cfg_pickle.recreate:
             self.pickle_results(self.pickle_path+cfg_pickle.save_name)
@@ -531,7 +531,7 @@ class FieldFitter:
                     self.params['C_{0}_{1}'.format(cn, cm)].vary = True
 
         if not recreate:
-            print 'fitting external with cn={0}, cm={1}'.format(cns, cms)
+            print('fitting external with cn={0}, cm={1}'.format(cns, cms))
         start_time = time()
         if recreate:
             for param in self.params:
@@ -550,7 +550,7 @@ class FieldFitter:
         self.params = self.result.params
         end_time = time()
         if not recreate:
-            print("Elapsed time was %g seconds" % (end_time - start_time))
+            print(("Elapsed time was %g seconds" % (end_time - start_time)))
             report_fit(self.result, show_correl=False)
         if not self.no_save and not recreate:
             self.pickle_results(pickle_name)

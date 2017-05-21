@@ -48,7 +48,7 @@ brianleepollack@gmail.com
 
 
 import re
-import cPickle as pkl
+import pickle as pkl
 import numpy as np
 import pandas as pd
 import mu2e.src.RowTransformations as rt
@@ -175,7 +175,7 @@ class DataFrameMaker(object):
 
         """
 
-        print 'num of columns start', len(self.data_frame.index)
+        print('num of columns start', len(self.data_frame.index))
 
         # Convert to mm for some hard-coded versions
         if (('GA' in self.field_map_version and '5' not in self.field_map_version) or
@@ -217,7 +217,7 @@ class DataFrameMaker(object):
         self.data_frame.sort_values(['X', 'Y', 'Z'], inplace=True)
         self.data_frame.reset_index(inplace=True, drop=True)
         self.data_frame = self.data_frame.round(9)
-        print 'num of columns end', len(self.data_frame.index)
+        print('num of columns end', len(self.data_frame.index))
 
     def make_dump(self, suffix=''):
         """Create a pickle file containing the data_frame, in the same dir as the input.
@@ -302,7 +302,7 @@ def g4root_to_df(input_name, make_pickle=False, do_basic_modifications=False,
             df_ntvd.eval('p = sqrt(px**2+py**2+pz**2)', inplace=True)
 
     if make_pickle:
-        print 'loading into hdf5'
+        print('loading into hdf5')
         # pkl.dump((df_nttvd, df_ntpart), open(input_name + '.p', "wb"), pkl.HIGHEST_PROTOCOL)
         store = pd.HDFStore(input_name+'.h5')
         if do_part:
@@ -312,13 +312,13 @@ def g4root_to_df(input_name, make_pickle=False, do_basic_modifications=False,
         if do_vd:
             store['df_ntvd'] = df_ntvd
         store.close()
-        print 'file finished'
+        print('file finished')
     else:
         return (df_ntpart, df_nttvd, df_ntvd)
 
 
 def g4root_to_df_skim_and_combo(input_name, total_n):
-    for i in tqdm(range(total_n)):
+    for i in tqdm(list(range(total_n))):
         df_ntpart, df_nttvd, df_ntvd = g4root_to_df(input_name+str(i), make_pickle=False,
                                                     do_basic_modifications=True, cluster=i)
         good_runevt = df_ntpart.query('pdg==11 and p>75').runevt.unique()
@@ -366,5 +366,5 @@ if __name__ == "__main__":
     # data_maker.do_basic_modifications()
     data_maker.make_dump()
     # data_maker.make_dump('_8mmOffset')
-    print data_maker.data_frame.head()
-    print data_maker.data_frame.tail()
+    print(data_maker.data_frame.head())
+    print(data_maker.data_frame.tail())

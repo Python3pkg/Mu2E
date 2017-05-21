@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from __future__ import division
+
 import numpy as np
 import pandas as pd
 from mpl_toolkits.mplot3d import axes3d
@@ -22,9 +22,9 @@ z = np.linspace(5500,12000,9)
 xx,yy,zz = np.meshgrid(x,y,z)
 
 df = pd.DataFrame(np.array([xx,yy,zz]).reshape(3,-1).T,columns=['X','Y','Z'])
-print df
-print mag_field_function(df['X'][0],df['Y'][0],df['Z'][0],cart=True)
-df['Bx'],df['By'],df['Bz']= zip(*df.apply(lambda row: mag_field_function(row['X'],row['Y'],row['Z'],cart=True),axis=1))
+print(df)
+print(mag_field_function(df['X'][0],df['Y'][0],df['Z'][0],cart=True))
+df['Bx'],df['By'],df['Bz']= list(zip(*df.apply(lambda row: mag_field_function(row['X'],row['Y'],row['Z'],cart=True),axis=1)))
 
 #load the field into a dataframe
 #df = pd.DataFrame(np.array([xx,yy,zz,bxx,byy,bzz]).reshape(6,-1).T,columns = ['X','Y','Z','Bx','By','Bz'])
@@ -127,7 +127,7 @@ solver.set_initial_condition(init_state)
 X,t = solver.solve(t_steps)
 end_time=time()
 v_final = np.asarray([X[-1,3],X[-1,4],X[-1,5]])
-print("Elapsed time was %g seconds" % (end_time - start_time))
+print(("Elapsed time was %g seconds" % (end_time - start_time)))
 
 #ax.plot(path_z,path_x,zs=path_y,linewidth=2)
 #path = np.asarray(path)
@@ -139,11 +139,11 @@ ax.set_title('Path of electron through magnetic field')
 # these are matplotlib.patch.Patch properties
 textstr = 'init pos={0}\ninit mom={1} (MeV)\nB={2}'.format(init_pos, init_mom, 'ideal DS field map')
 props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-print 'init_E', gamma(init_v)*0.511, 'MeV'
+print('init_E', gamma(init_v)*0.511, 'MeV')
 #print 'final_E', gamma(v)*0.511, 'MeV'
-print 'final_E', gamma(v_final)*0.511, 'MeV'
+print('final_E', gamma(v_final)*0.511, 'MeV')
 #print 'energy diff', gamma(v)*0.511 - gamma(init_v)*0.511, 'MeV'
-print 'energy diff', gamma(v_final)*0.511 - gamma(init_v)*0.511, 'MeV'
+print('energy diff', gamma(v_final)*0.511 - gamma(init_v)*0.511, 'MeV')
 
 # place a text box in upper left in axes coords
 ax.text2D(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=14,verticalalignment='top', bbox=props)

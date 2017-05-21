@@ -27,7 +27,7 @@ df = pd.DataFrame(np.array([xx,yy,zz,bxx,byy,bzz]).reshape(6,-1).T,columns = ['X
 df_quiver = df.query('(X+5)%10==0 and (Y+5)%10==0 and Z%10==0')
 #recreate 3d meshgrid by reshaping the df back into six 3d arrays
 quiver_size = int(round(df_quiver.shape[0]**(1./3.)))
-print 'quiver_size', quiver_size
+print('quiver_size', quiver_size)
 qxx,qyy,qzz,qbxx,qbyy,qbzz = df_quiver.values.T.reshape(6,quiver_size,quiver_size,quiver_size)
 
 fig = plt.figure()
@@ -98,10 +98,10 @@ while (x[0]<=pos[0]<=x[-1] and y[0]<=pos[1]<=y[-1] and z[0]<=pos[2]<=z[-1] and t
     #print pos
     path.append(pos)
     total_time+=dt
-print total_time
+print(total_time)
 end_time=time()
 #if not cfg_pickle.recreate:
-print("Elapsed time was %g seconds" % (end_time - start_time))
+print(("Elapsed time was %g seconds" % (end_time - start_time)))
 
 
 #ax.plot(path_z,path_x,zs=path_y,linewidth=2)
@@ -113,9 +113,9 @@ ax.set_title('Path of electron through magnetic field')
 # these are matplotlib.patch.Patch properties
 textstr = 'init pos={0}\ninit v={1} (m/s)\nB={2}'.format(init_pos, init_v, b)
 props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-print 'init_v', np.sqrt(np.dot(init_v,init_v)), 'm/s'
-print 'final_v', np.sqrt(np.dot(v,v)), 'm/s'
-print 'radius', (np.max(path[:,1])-np.min(path[:,1]))/2
+print('init_v', np.sqrt(np.dot(init_v,init_v)), 'm/s')
+print('final_v', np.sqrt(np.dot(v,v)), 'm/s')
+print('radius', (np.max(path[:,1])-np.min(path[:,1]))/2)
 
 # place a text box in upper left in axes coords
 ax.text2D(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=14,verticalalignment='top', bbox=props)

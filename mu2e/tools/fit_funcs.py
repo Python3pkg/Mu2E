@@ -24,19 +24,19 @@ Notes:
 brianleepollack@gmail.com
 """
 
-from __future__ import division
+
 from scipy import special
 import numpy as np
 import numexpr as ne
 from numba import guvectorize
 from math import cos, sin
-from itertools import izip
+
 
 
 def pairwise(iterable):
     """s -> (s0,s1), (s2,s3), (s4, s5), ..."""
     a = iter(iterable)
-    return izip(a, a)
+    return zip(a, a)
 
 
 def brzphi_3d_producer(z, r, phi, R, ns, ms):
@@ -67,7 +67,7 @@ def brzphi_3d_producer(z, r, phi, R, ns, ms):
         model_z = 0.0
         model_phi = 0.0
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                              x.split('_')[0])))
 
@@ -119,7 +119,7 @@ def b_external_3d_producer(a, b, c, x, y, z, cns, cms):
         model_x = 0.0
         model_y = 0.0
         model_z = 0.0
-        Cs = sorted({k: v for (k, v) in AB_params.iteritems() if 'C' in k})
+        Cs = sorted({k: v for (k, v) in AB_params.items() if 'C' in k})
 
         for cn in range(1, cns+1):
             for cm in range(1, cms+1):
@@ -195,10 +195,10 @@ def b_full_3d_producer(a, b, c, R, z, r, phi, ns, ms, cns, cms):
         model_z = 0.0
         model_phi = 0.0
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                              x.split('_')[0])))
-        Cs = sorted({k: v for (k, v) in AB_params.iteritems() if 'C' in k})
+        Cs = sorted({k: v for (k, v) in AB_params.items() if 'C' in k})
 
         for n in range(ns):
             for i, ab in enumerate(pairwise(ABs[n*ms*2:(n+1)*ms*2])):
@@ -256,10 +256,10 @@ def brzphi_3d_producer_v2(z, r, phi, R, ns, ms):
         model_z = 0.0
         model_phi = 0.0
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                              x.split('_')[0])))
-        CDs = sorted({k: v for (k, v) in AB_params.iteritems() if ('C' in k or 'D' in k)},
+        CDs = sorted({k: v for (k, v) in AB_params.items() if ('C' in k or 'D' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, cd in enumerate(pairwise(CDs)):
@@ -322,10 +322,10 @@ def brzphi_3d_producer_modbessel(z, r, phi, L, ns, ms):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                              x.split('_')[0])))
-        CDs = sorted({k: v for (k, v) in AB_params.iteritems() if ('C' in k or 'D' in k)},
+        CDs = sorted({k: v for (k, v) in AB_params.items() if ('C' in k or 'D' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, cd in enumerate(pairwise(CDs)):
@@ -387,10 +387,10 @@ def brzphi_3d_producer_modbessel_phase(z, r, phi, L, ns, ms):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, d in enumerate(Ds):
@@ -482,12 +482,12 @@ def brzphi_3d_producer_modbessel_phase_ext(z, r, phi, L, ns, ms, cns, cms):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
-        Cs = sorted({k: v for (k, v) in AB_params.iteritems() if 'C' in k})
+        Cs = sorted({k: v for (k, v) in AB_params.items() if 'C' in k})
 
         for n, d in enumerate(Ds):
             for i, ab in enumerate(pairwise(ABs[n*ms*2:(n+1)*ms*2])):
@@ -585,16 +585,16 @@ def brzphi_3d_producer_modbessel_phase_hybrid(z, r, phi, L, ns, ms, cns, cms):
         model_r = np.zeros(z.shape, dtype=np.float64)
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
-        EFs = sorted({k: v for (k, v) in AB_params.iteritems() if ('E' in k or 'F' in k)},
+        EFs = sorted({k: v for (k, v) in AB_params.items() if ('E' in k or 'F' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Gs = sorted({k: v for (k, v) in AB_params.iteritems() if ('G' in k)}, key=lambda x:
+        Gs = sorted({k: v for (k, v) in AB_params.items() if ('G' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, d in enumerate(Ds):
@@ -695,16 +695,16 @@ def brzphi_3d_producer_modbessel_phase_hybrid_disp(z, r, phi, rp, phip, L, ns, m
         model_r = np.zeros(z.shape, dtype=np.float64)
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
-        EFs = sorted({k: v for (k, v) in AB_params.iteritems() if ('E' in k or 'F' in k)},
+        EFs = sorted({k: v for (k, v) in AB_params.items() if ('E' in k or 'F' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Gs = sorted({k: v for (k, v) in AB_params.iteritems() if ('G' in k)}, key=lambda x:
+        Gs = sorted({k: v for (k, v) in AB_params.items() if ('G' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, d in enumerate(Ds):
@@ -793,16 +793,16 @@ def brzphi_3d_producer_modbessel_phase_hybrid_disp2(z, r, phi, rp, phip, L, ns, 
         model_r = np.zeros(z.shape, dtype=np.float64)
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
-        EFs = sorted({k: v for (k, v) in AB_params.iteritems() if ('E' in k or 'F' in k)},
+        EFs = sorted({k: v for (k, v) in AB_params.items() if ('E' in k or 'F' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Gs = sorted({k: v for (k, v) in AB_params.iteritems() if ('G' in k)}, key=lambda x:
+        Gs = sorted({k: v for (k, v) in AB_params.items() if ('G' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, d in enumerate(Ds):
@@ -891,16 +891,16 @@ def brzphi_3d_producer_modbessel_phase_hybrid_disp3(z, r, phi, rp, phip, L, ns, 
         model_r = np.zeros(z.shape, dtype=np.float64)
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Ds = sorted({k: v for (k, v) in AB_params.iteritems() if ('D' in k)}, key=lambda x:
+        Ds = sorted({k: v for (k, v) in AB_params.items() if ('D' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
-        EFs = sorted({k: v for (k, v) in AB_params.iteritems() if ('E' in k or 'F' in k)},
+        EFs = sorted({k: v for (k, v) in AB_params.items() if ('E' in k or 'F' in k)},
                      key=lambda x: ','.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                             x.split('_')[0])))
-        Gs = sorted({k: v for (k, v) in AB_params.iteritems() if ('G' in k)}, key=lambda x:
+        Gs = sorted({k: v for (k, v) in AB_params.items() if ('G' in k)}, key=lambda x:
                     ','.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, d in enumerate(Ds):
@@ -970,10 +970,10 @@ def brzphi_3d_producer_bessel(z, r, phi, R, ns, ms):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ', '.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                               x.split('_')[0])))
-        CDs = sorted({k: v for (k, v) in AB_params.iteritems() if ('C' in k or 'D' in k)},
+        CDs = sorted({k: v for (k, v) in AB_params.items() if ('C' in k or 'D' in k)},
                      key=lambda x: ', '.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, cd in enumerate(pairwise(CDs)):
@@ -1056,10 +1056,10 @@ def brzphi_3d_producer_bessel_hybrid(z, r, phi, R, ns, ms):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ', '.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                               x.split('_')[0])))
-        CDs = sorted({k: v for (k, v) in AB_params.iteritems() if ('C' in k or 'D' in k)},
+        CDs = sorted({k: v for (k, v) in AB_params.items() if ('C' in k or 'D' in k)},
                      key=lambda x: ', '.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, cd in enumerate(pairwise(CDs)):
@@ -1135,10 +1135,10 @@ def brzphi_3d_producer_profile(z, r, phi, R, ns, ms):
         model_z = np.zeros(z.shape, dtype=np.float64)
         model_phi = np.zeros(z.shape, dtype=np.float64)
         R = R
-        ABs = sorted({k: v for (k, v) in AB_params.iteritems() if ('A' in k or 'B' in k)},
+        ABs = sorted({k: v for (k, v) in AB_params.items() if ('A' in k or 'B' in k)},
                      key=lambda x: ', '.join((x.split('_')[1].zfill(5), x.split('_')[2].zfill(5),
                                               x.split('_')[0])))
-        CDs = sorted({k: v for (k, v) in AB_params.iteritems() if ('C' in k or 'D' in k)},
+        CDs = sorted({k: v for (k, v) in AB_params.items() if ('C' in k or 'D' in k)},
                      key=lambda x: ', '.join((x.split('_')[1].zfill(5), x.split('_')[0])))
 
         for n, cd in enumerate(pairwise(CDs)):

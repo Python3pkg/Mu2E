@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from __future__ import division
+
 import collections
 import plotly.graph_objs as go
 from mu2e.offline import init_notebook_mode, iplot
@@ -57,8 +57,8 @@ def interp_phi_cubic(df, x, y, z, plot=False, mode='lacey', shift=0):
             # 56         57        58        59        60        61       62       63
             '21-1' ,   '210' ,   '211' ,   '212' ,   '22-1' ,  '220' ,  '221' ,  '222' ,
         ]
-        index_list = range(0,64)
-        vertex_dict = dict(zip(df_trimmed.Vertex, index_list))
+        index_list = list(range(0,64))
+        vertex_dict = dict(list(zip(df_trimmed.Vertex, index_list)))
 
         # Define some lagrange polynomials
         def lg_mone(n):
@@ -249,7 +249,7 @@ def interp_phi_cubic(df, x, y, z, plot=False, mode='lacey', shift=0):
         )
         fig = go.Figure(data=data, layout=layout)
         iplot(fig)
-        print x_rel
+        print(x_rel)
 
     return df_trimmed, [bx_interp, by_interp, bz_interp]
     #return df_trimmed, vertex_dict

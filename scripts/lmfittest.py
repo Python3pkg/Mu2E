@@ -71,4 +71,4 @@ y = -30.4 + 7.8*x - 0.5*x*x + 0.03 * x**3 + 0.009*x**4
 y = y + np.random.normal(size=len(y), scale=0.2)
 
 out = my_model.fit(y, params, x=x)
-print(out.fit_report())
+print((out.fit_report()))
